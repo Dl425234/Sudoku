@@ -226,6 +226,117 @@ void printGrid(int grid[M][M])
     }
 }
 
+/*
+ *
+ *  FUNCTIONS TO SOLVE 16_X_16 BOARD!
+ *
+ *
+ */
+
+
+bool FindUnassignedLocation(int grid[C][C], int &row, int &col);
+
+
+// Checks whether it will be legal to assign num to the given row,col
+bool isSafe(int grid[C][C], int row, int col, int num);
+
+/* Takes a partially filled-in grid and attempts to assign values to
+  all unassigned locations in such a way to meet the requirements
+  for Sudoku solution (non-duplication across rows, columns, and boxes) */
+bool SolveSudoku(int grid[C][C])
+{
+  int row, col;
+
+  // If there is no unassigned location, we are done
+  if (!FindUnassignedLocation(grid, row, col))
+    return true; // success!
+
+  // consider digits 1 to 9
+  for (int num = 1; num <= C; num++)
+    {
+      // if looks promising
+      if (isSafe(grid, row, col, num))
+        {
+    // make tentative assignment
+    grid[row][col] = num;
+
+    // return, if success, yay!
+    if (SolveSudoku(grid))
+      return true;
+
+    // failure, unmake & try again
+    grid[row][col] = UNASSIGNED;
+        }
+    }
+  return false; // this triggers backtracking
+}
+
+/* Searches the grid to find an entry that is still unassigned. If
+   found, the reference parameters row, col will be set the location
+   that is unassigned, and true is returned. If no unassigned entries
+   remain, false is returned. */
+bool FindUnassignedLocation(int grid[C][C], int &row, int &col)
+{
+  for (row = 0; row < C; row++)
+    for (col = 0; col < C; col++)
+      if (grid[row][col] == UNASSIGNED)
+  return true;
+  return false;
+}
+
+/* Returns a boolean which indicates whether any assigned entry
+   in the specified row matches the given number. */
+bool UsedInRow(int grid[C][C], int row, int num)
+{
+  for (int col = 0; col < C; col++)
+    if (grid[row][col] == num)
+      return true;
+  return false;
+}
+
+/* Returns a boolean which indicates whether any assigned entry
+   in the specified column matches the given number. */
+bool UsedInCol(int grid[C][C], int col, int num)
+{
+  for (int row = 0; row < C; row++)
+    if (grid[row][col] == num)
+      return true;
+  return false;
+}
+
+/* Returns a boolean which indicates whether any assigned entry
+   within the specified 4x4 box matches the given number. */
+bool UsedInBox(int grid[C][C], int boxStartRow, int boxStartCol, int num)
+{
+  for (int row = 0; row < SQN; row++)
+    for (int col = 0; col < SQN; col++)
+      if (grid[row+boxStartRow][col+boxStartCol] == num)
+  return true;
+  return false;
+}
+
+/* Returns a boolean which indicates whether it will be legal to assign
+   num to the given row,col location. */
+bool isSafe(int grid[C][C], int row, int col, int num)
+{
+  /* Check if 'num' is not already placed in current row,
+     current column and current 3x3 box */
+  return !UsedInRow(grid, row, num) &&
+    !UsedInCol(grid, col, num) &&
+    !UsedInBox(grid, row - row%SQN , col - col%SQN, num);
+}
+
+/* A utility function to print grid  */
+void printGrid(int grid[C][C])
+{
+  for (int row = 0; row < C; row++)
+    {
+      for (int col = 0; col < C; col++)
+  printf("%2d ", grid[row][col]);
+      printf("\n");
+    }
+}
+
 
 /* Driver Program to test above functions */
 int main()
@@ -251,6 +362,16 @@ int main()
       else grid9_1[row][col]=0;
         }
     }  
+    
+     //make 16x16 grid
+  int grid16[C][C] = {};
+    for (int row = 0; row < C; row++){
+    for (int col = 0; col < C; col++){
+      rando = rand()%(C+1);//number is in range of 0 and 9
+      if (isSafe(grid16,row,col,rando)&&(col%rando)==0) grid16[row][col]=rando;
+      else grid16[row][col]=0;
+        }
+    } 
 
 
   printf("\n");
@@ -276,7 +397,18 @@ int main()
   } else
     printf("No solution exists");
 
+  printf("\n");
+  printf("Problem Grid: \n");
+  printGrid(grid16);
 
+
+  if (SolveSudoku(grid16) == true){
+    printf("\n\nSolved Grid: \n");
+    printGrid(grid16);
+  } else
+    printf("No solution exists");
+
+  printf("\n\n");
 
   return 0;
 }
