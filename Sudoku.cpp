@@ -351,7 +351,14 @@ int main()
   srand((unsigned)time(0)); //seed based on time
   //make 4x4g rid
    int grid4[N][N] = {{0,0,3,4},{3,4,0,0},{0,0,4,3},{0,3,2,0}};
-    
+   int grid4_1[N][N] = {};
+    for (int row = 0; row <N; row++){
+    for (int col = 0; col < N; col++){
+      rando = rand()%(N+1);//number is in range of 0 and 4
+      if (isSafe(grid4_1,row,col,rando)&&(col%rando)==0) grid4_1[row][col]=rando;
+      else grid4_1[row][col]=0;
+        }
+    }  
     //make 9x9 grid
   int grid9_1[M][M] = {};
     for (int row = 0; row < M; row++){
@@ -363,19 +370,43 @@ int main()
     }  
     
      //make 16x16 grid
-  int grid16[C][C] = {};
+  int grid16_1[C][C] = {};
     for (int row = 0; row < C; row++){
     for (int col = 0; col < C; col++){
-      rando = rand()%(C+1);//number is in range of 0 and 9
-      if (isSafe(grid16,row,col,rando)&&(col%rando)==0) grid16[row][col]=rando;
-      else grid16[row][col]=0;
+      rando = rand()%(C+1);//number is in range of 0 and 16
+      if (isSafe(grid16_1,row,col,rando)&&(col%rando)==0) grid16_1[row][col]=rando;
+      else grid16_1[row][col]=0;
         }
     } 
-
+    
+  int grid16[C][C]={//set example
+    {5,11,16,4,0,0,13,1,0,0,0,0,0,0,0,0},
+    {0,0,0,10,0,11,14,2,13,0,0,16,0,12,8,0},
+    {13,0,0,12,0,0,5,0,0,10,3,0,11,0,2,0},
+    {1,0,0,2,0,0,0,0,0,0,14,5,10,0,4,0},
+    
+    {4,0,0,8,13,0,0,15,0,0,0,10,16,0,0,2},
+    {0,0,0,0,0,10,16,0,7,0,0,0,0,3,13,0},
+    {0,10,0,0,8,0,0,0,1,5,16,13,0,11,0,9},
+    {0,0,0,0,2,0,0,14,8,0,11,0,6,1,5,0},
+    
+    {0,13,12,16,0,4,0,10,15,0,0,7,0,0,0,11},
+    {8,0,1,0,14,12,11,16,0,0,0,6,0,0,10,0},
+    {0,4,10,0,0,0,0,6,0,16,1,0,0,0,0,0},
+    {3,0,0,5,15,0,0,0,10,0,0,2,4,0,0,11},
+    
+    {0,16,0,3,1,15,0,0,0,0,0,0,9,0,0,13},
+    {0,6,0,11,0,7,10,0,0,15,0,0,5,0,0,14},
+    {0,9,13,0,16,0,0,8,6,7,5,0,3,0,0,0},
+    {0,0,0,0,0,0,0,0,16,3,0,0,1,8,12,7}
+    
+  };
+    
   
   printf("\n");
-  printf("4x4 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-4 Present in Each Row and Column\n\n");
-  printf("Problem Grid: \n");
+  printf("4x4 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-4 Present in Each Row and Column\n");
+  printf("-2x2 Internal Grids Contain the Numbers 1-4 and do not Repeat Numbers\n\n");
+  printf("Problem Grid (Set example): \n");
   printGrid(grid4);
 
 
@@ -384,8 +415,19 @@ int main()
     printGrid(grid4);
   } else
     printf("No solution exists");
-
+    
   printf("\n\n");
+  printf("Problem Grid (Random example): \n");
+  printGrid(grid4_1);
+  
+  if (SolveSudoku(grid4_1) == true){
+    printf("\n\nSolved Grid: \n");
+    printGrid(grid4_1);
+  } else
+    printf("No solution exists");
+    
+  printf("\n\n");
+  
   printf("9x9 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-9 Present in Each Row and Column\n");
   printf("-3x3 Internal Grids Contain the Numbers 1-9 and do not Repeat Numbers\n\n");
   printf("Problem Grid: \n");
@@ -399,6 +441,8 @@ int main()
     printf("No solution exists");
 
   printf("\n");
+  printf("16x16 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-16 Present in Each Row and Column\n");
+  printf("-4x4 Internal Grids Contain the Numbers 1-16 and do not Repeat Numbers\n\n");
   printf("Problem Grid: \n");
   printGrid(grid16);
 
