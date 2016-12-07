@@ -9,7 +9,7 @@
 #define N 4
 #define M 9
 #define C 16
-#define SQN 2
+#define SQN 3
 
 // This function finds an entry in grid that is still unassigned
 bool FindUnassignedLocation(int grid[N][N], int &row, int &col);
@@ -32,12 +32,15 @@ bool SolveSudoku(int grid[N][N])
   // consider digits 1 to 9
   for (int num = 1; num <= N; num++)
     {
+      
       // if looks promising
       if (isSafe(grid, row, col, num))
         {
     // make tentative assignment
+   
     grid[row][col] = num;
-
+   
+    
     // return, if success, yay!
     if (SolveSudoku(grid))
       return true;
@@ -86,8 +89,8 @@ bool UsedInCol(int grid[N][N], int col, int num)
    within the specified 3x3 box matches the given number. */
 bool UsedInBox(int grid[N][N], int boxStartRow, int boxStartCol, int num)
 {
-  for (int row = 0; row < SQN; row++)
-    for (int col = 0; col < SQN; col++)
+  for (int row = 0; row < SQN-1; row++)
+    for (int col = 0; col < SQN-1; col++)
       if (grid[row+boxStartRow][col+boxStartCol] == num)
   return true;
   return false;
@@ -147,6 +150,7 @@ bool SolveSudoku(int grid[M][M])
       if (isSafe(grid, row, col, num))
         {
     // make tentative assignment
+    
     grid[row][col] = num;
 
     // return, if success, yay!
@@ -373,8 +377,9 @@ int main()
         }
     } 
 
-
+  
   printf("\n");
+  printf("4x4 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-4 Present in Each Row and Column\n\n");
   printf("Problem Grid: \n");
   printGrid(grid4);
 
@@ -386,7 +391,8 @@ int main()
     printf("No solution exists");
 
   printf("\n\n");
-
+  printf("9x9 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-9 Present in Each Row and Column\n");
+  printf("-3x3 Internal Grids Contain the Numbers 1-9 and do not Repeat Numbers\n\n");
   printf("Problem Grid: \n");
   printGrid(grid9_1);
 
