@@ -38,7 +38,7 @@ bool SolveSudoku(int grid[N][N])
         {
     // make tentative assignment
    
-    grid[row][col] = num;
+        grid[row][col] = num;
    
     
     // return, if success, yay!
@@ -61,7 +61,7 @@ bool FindUnassignedLocation(int grid[N][N], int &row, int &col)
   for (row = 0; row < N; row++)
     for (col = 0; col < N; col++)
       if (grid[row][col] == UNASSIGNED)
-  return true;
+        return true;
   return false;
 }
 
@@ -89,10 +89,11 @@ bool UsedInCol(int grid[N][N], int col, int num)
    within the specified 3x3 box matches the given number. */
 bool UsedInBox(int grid[N][N], int boxStartRow, int boxStartCol, int num)
 {
-  for (int row = 0; row < SQN-1; row++)
-    for (int col = 0; col < SQN-1; col++)
-      if (grid[row+boxStartRow][col+boxStartCol] == num)
-  return true;
+  for (int row = 0; row < SQN-1; row++){
+    for (int col = 0; col < SQN-1; col++){
+      if (grid[row+boxStartRow][col+boxStartCol] == num) return true;
+    }
+  }
   return false;
 }
 
@@ -104,7 +105,7 @@ bool isSafe(int grid[N][N], int row, int col, int num)
      current column and current 3x3 box */
   return !UsedInRow(grid, row, num) &&
     !UsedInCol(grid, col, num) &&
-    !UsedInBox(grid, row - row%SQN , col - col%SQN, num);
+    !UsedInBox(grid, row - row%(SQN-1) , col - col%(SQN-1), num);
 }
 
 /* A utility function to print grid  */
@@ -312,10 +313,10 @@ bool UsedInCol(int grid[C][C], int col, int num)
    within the specified 4x4 box matches the given number. */
 bool UsedInBox(int grid[C][C], int boxStartRow, int boxStartCol, int num)
 {
-  for (int row = 0; row < SQN; row++)
-    for (int col = 0; col < SQN; col++)
+  for (int row = 0; row < SQN+1; row++)
+    for (int col = 0; col < SQN+1; col++)
       if (grid[row+boxStartRow][col+boxStartCol] == num)
-  return true;
+        return true;
   return false;
 }
 
@@ -349,14 +350,8 @@ int main()
   int rando =0;//random number 
   srand((unsigned)time(0)); //seed based on time
   //make 4x4g rid
-   int grid4[N][N] = {};
-  for (int row = 0; row < N; row++){
-    for (int col = 0; col < N; col++){
-      rando = rand()%(N+1);//number is in range of 0 and 4
-      if (isSafe(grid4,row,col,rando)&&(col%rando)==0) grid4[row][col]=rando;
-      else grid4[row][col]=0;
-        }
-    }
+   int grid4[N][N] = {{0,0,3,4},{3,4,0,0},{0,0,4,3},{0,3,2,0}};
+    
     //make 9x9 grid
   int grid9_1[M][M] = {};
     for (int row = 0; row < M; row++){
