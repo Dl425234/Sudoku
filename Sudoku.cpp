@@ -444,12 +444,12 @@ int main()
   printf("16x16 Grid. Constraints: \n -No Same Number in Row or Column \n -Numbers 1-16 Present in Each Row and Column\n");
   printf("-4x4 Internal Grids Contain the Numbers 1-16 and do not Repeat Numbers\n\n");
   printf("Problem Grid: \n");
-  printGrid(grid16);
+  printGrid(grid16_1);
 
 
-  if (SolveSudoku(grid16) == true){
+  if (SolveSudoku(grid16_1) == true){
     printf("\n\nSolved Grid: \n");
-    printGrid(grid16);
+    printGrid(grid16_1);
   } else
     printf("No solution exists");
 
